@@ -1,0 +1,925 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Leave Tracker — AM Team + Director</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Quicksand:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        :root {
+            --teal: #00AFA0;
+            --teal-dark: #008B7F;
+            --gold: #FFC32E;
+            --blue: #3724ED;
+            --glass: #FEFBFD;
+            --glass-light: #FFFFFF;
+            --text: #1A1A2E;
+            --text-muted: #6B7280;
+            --border: #E5E7EB;
+            --red: #EF4444;
+            --green: #10B981;
+            --amber: #F59E0B;
+            --shadow: 0 4px 24px rgba(0,0,0,0.06);
+            --radius: 16px;
+            --radius-sm: 10px;
+        }
+
+        body {
+            font-family: 'Space Grotesk', sans-serif;
+            background: #F8F9FB;
+            color: var(--text);
+            padding: 32px 24px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        /* Header */
+        .header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 32px;
+            flex-wrap: wrap;
+            gap: 16px;
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .logo {
+            width: 48px;
+            height: 48px;
+            background: var(--teal);
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 700;
+            font-size: 20px;
+        }
+
+        .header h1 {
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--text);
+        }
+
+        .header .subtitle {
+            font-size: 14px;
+            color: var(--text-muted);
+            font-weight: 400;
+            margin-top: 2px;
+        }
+
+        .badge {
+            background: var(--teal);
+            color: white;
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .badge-outline {
+            background: transparent;
+            border: 1.5px solid var(--teal);
+            color: var(--teal);
+        }
+
+        .last-updated {
+            font-size: 13px;
+            color: var(--text-muted);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        /* Summary Cards Row */
+        .summary-row {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 16px;
+            margin-bottom: 32px;
+        }
+
+        .summary-card {
+            background: var(--glass-light);
+            border-radius: var(--radius);
+            padding: 20px 24px;
+            box-shadow: var(--shadow);
+            border: 1px solid var(--border);
+        }
+
+        .summary-card .value {
+            font-size: 32px;
+            font-weight: 700;
+            color: var(--teal);
+            line-height: 1.2;
+        }
+
+        .summary-card .label {
+            font-size: 13px;
+            color: var(--text-muted);
+            font-weight: 500;
+            margin-top: 4px;
+        }
+
+        .summary-card .sub {
+            font-size: 12px;
+            color: var(--text-muted);
+            margin-top: 2px;
+        }
+
+        /* Section Headers */
+        .section-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 20px;
+            margin-top: 8px;
+        }
+
+        .section-header h2 {
+            font-size: 20px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .section-header .count {
+            background: var(--teal);
+            color: white;
+            font-size: 12px;
+            font-weight: 600;
+            padding: 2px 10px;
+            border-radius: 12px;
+        }
+
+        /* Person Card */
+        .person-card {
+            background: var(--glass-light);
+            border-radius: var(--radius);
+            padding: 24px;
+            box-shadow: var(--shadow);
+            border: 1px solid var(--border);
+            margin-bottom: 20px;
+        }
+
+        .person-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 16px;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        .person-info {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .avatar {
+            width: 44px;
+            height: 44px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 16px;
+            color: white;
+            flex-shrink: 0;
+        }
+
+        .avatar.mhike { background: var(--blue); }
+        .avatar.sally { background: var(--teal); }
+        .avatar.mergel { background: var(--gold); color: #1A1A2E; }
+        .avatar.carlo { background: #8B5CF6; }
+        .avatar.jd { background: #EC4899; }
+
+        .person-name {
+            font-size: 17px;
+            font-weight: 600;
+        }
+
+        .person-role {
+            font-size: 13px;
+            color: var(--text-muted);
+        }
+
+        .days-left-badge {
+            background: #F0FDF4;
+            color: var(--green);
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .days-left-badge .lbl {
+            font-weight: 400;
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+
+        /* Leave balances grid */
+        .balances {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .balance-item {
+            background: #F8F9FB;
+            border-radius: var(--radius-sm);
+            padding: 12px 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .balance-item .type {
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--text-muted);
+        }
+
+        .balance-item .count {
+            font-size: 15px;
+            font-weight: 700;
+        }
+
+        .balance-item .count .used {
+            font-weight: 400;
+            color: var(--text-muted);
+            font-size: 13px;
+        }
+
+        /* Leave Log Table */
+        .leave-log {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .leave-log th {
+            text-align: left;
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            padding: 10px 12px;
+            border-bottom: 2px solid var(--border);
+        }
+
+        .leave-log td {
+            padding: 10px 12px;
+            border-bottom: 1px solid var(--border);
+            font-size: 14px;
+        }
+
+        .leave-log tr:last-child td {
+            border-bottom: none;
+        }
+
+        .status-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            padding: 3px 10px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .status-badge.used {
+            background: #F0FDF4;
+            color: var(--green);
+        }
+
+        .status-badge.planned {
+            background: #FEF3C7;
+            color: #92400E;
+        }
+
+        .tag-vl { color: var(--blue); font-weight: 600; }
+        .tag-sl { color: var(--amber); font-weight: 600; }
+        .tag-bl { color: #EC4899; font-weight: 600; }
+
+        .no-leaves {
+            color: var(--text-muted);
+            font-size: 14px;
+            font-style: italic;
+            padding: 12px 0;
+        }
+
+        /* Upcoming section */
+        .upcoming-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 16px;
+            margin-bottom: 20px;
+        }
+
+        .upcoming-card {
+            background: #FEF3C7;
+            border: 1px solid #FDE68A;
+            border-radius: var(--radius-sm);
+            padding: 16px;
+        }
+
+        .upcoming-card .date {
+            font-size: 13px;
+            font-weight: 600;
+            color: #92400E;
+        }
+
+        .upcoming-card .name {
+            font-size: 15px;
+            font-weight: 600;
+            margin-top: 4px;
+        }
+
+        .upcoming-card .detail {
+            font-size: 13px;
+            color: var(--text-muted);
+            margin-top: 2px;
+        }
+
+        /* Coverage notes */
+        .coverage-box {
+            background: #EFF6FF;
+            border: 1px solid #BFDBFE;
+            border-radius: var(--radius);
+            padding: 20px 24px;
+            margin-bottom: 32px;
+        }
+
+        .coverage-box h3 {
+            font-size: 15px;
+            font-weight: 600;
+            color: var(--blue);
+            margin-bottom: 8px;
+        }
+
+        .coverage-box p {
+            font-size: 14px;
+            color: var(--text-muted);
+        }
+
+        .coverage-box textarea {
+            width: 100%;
+            border: 1px solid #BFDBFE;
+            border-radius: 8px;
+            padding: 12px;
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 14px;
+            margin-top: 8px;
+            resize: vertical;
+            min-height: 60px;
+            background: white;
+        }
+
+        .coverage-box textarea:focus {
+            outline: none;
+            border-color: var(--blue);
+            box-shadow: 0 0 0 3px rgba(55, 36, 237, 0.1);
+        }
+
+        /* August Calendar */
+        .calendar-section {
+            background: var(--glass-light);
+            border-radius: var(--radius);
+            padding: 24px;
+            box-shadow: var(--shadow);
+            border: 1px solid var(--border);
+        }
+
+        .calendar-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+        }
+
+        .calendar-header h3 {
+            font-size: 16px;
+            font-weight: 600;
+        }
+
+        .calendar-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 4px;
+        }
+
+        .calendar-day-header {
+            text-align: center;
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--text-muted);
+            padding: 8px 0;
+        }
+
+        .calendar-day {
+            text-align: center;
+            padding: 8px 0;
+            font-size: 14px;
+            border-radius: 8px;
+            position: relative;
+        }
+
+        .calendar-day.leave {
+            background: #FEF3C7;
+            color: #92400E;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .calendar-day.leave::after {
+            content: attr(data-name);
+            position: absolute;
+            bottom: -16px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 9px;
+            color: var(--text-muted);
+            white-space: nowrap;
+        }
+
+        .calendar-day.empty {
+            visibility: hidden;
+        }
+
+        .calendar-day.today {
+            background: var(--teal);
+            color: white;
+            font-weight: 700;
+        }
+
+        .calendar-day.weekend {
+            color: #D1D5DB;
+        }
+
+        /* Footer */
+        .footer {
+            text-align: center;
+            padding: 24px 0 8px;
+            font-size: 13px;
+            color: var(--text-muted);
+            border-top: 1px solid var(--border);
+            margin-top: 32px;
+        }
+
+        .footer a {
+            color: var(--teal);
+            text-decoration: none;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .summary-row { grid-template-columns: repeat(2, 1fr); }
+            .balances { grid-template-columns: 1fr; }
+            .upcoming-grid { grid-template-columns: 1fr; }
+            .header h1 { font-size: 22px; }
+            body { padding: 16px 12px; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header -->
+    <div class="header">
+        <div class="header-left">
+            <div class="logo">📋</div>
+            <div>
+                <h1>Team Leave Tracker</h1>
+                <div class="subtitle">Accounts Management · Mall+ · FY 2026 · AM Team + Director View</div>
+            </div>
+        </div>
+        <div style="display:flex; align-items:center; gap:12px; flex-wrap:wrap;">
+            <span class="badge">🟢 Managed by Mhike Estipular</span>
+            <span class="last-updated">📅 Last updated: Jun 25, 2026</span>
+        </div>
+    </div>
+
+    <!-- Summary Cards -->
+    <div class="summary-row">
+        <div class="summary-card">
+            <div class="value">5</div>
+            <div class="label">Profiles Tracked</div>
+            <div class="sub">AM team + Director profile</div>
+        </div>
+        <div class="summary-card">
+            <div class="value">68.5</div>
+            <div class="label">Total Days Left</div>
+            <div class="sub">VL + SL + BL remaining</div>
+        </div>
+        <div class="summary-card">
+            <div class="value">8.5</div>
+            <div class="label">Used Leaves</div>
+            <div class="sub">Logged as used</div>
+        </div>
+        <div class="summary-card">
+            <div class="value">3</div>
+            <div class="label">Planned Leaves</div>
+            <div class="sub">Upcoming planned VLs</div>
+        </div>
+    </div>
+
+    <!-- Director Section -->
+    <div class="section-header">
+        <h2>👤 Director Dashboard</h2>
+        <span class="badge badge-outline">Incorporated from Mhike's personal tracker</span>
+    </div>
+
+    <div class="person-card">
+        <div class="person-header">
+            <div class="person-info">
+                <div class="avatar mhike">ME</div>
+                <div>
+                    <div class="person-name">Mhike Estipular</div>
+                    <div class="person-role">Accounts Management Director · FY 2026</div>
+                </div>
+            </div>
+            <div class="days-left-badge">
+                13 <span class="lbl">DAYS LEFT</span>
+            </div>
+        </div>
+        <div class="balances">
+            <div class="balance-item">
+                <span class="type">Vacation Leave</span>
+                <span class="count">7.5 <span class="used">/ 10</span></span>
+            </div>
+            <div class="balance-item">
+                <span class="type">Sick Leave</span>
+                <span class="count">4.5 <span class="used">/ 5</span></span>
+            </div>
+            <div class="balance-item">
+                <span class="type">Birthday Leave</span>
+                <span class="count">1 <span class="used">/ 1</span></span>
+            </div>
+        </div>
+        <h4 style="font-size:14px; font-weight:600; margin-bottom:10px; color:var(--text-muted);">Leave Log</h4>
+        <table class="leave-log">
+            <thead>
+                <tr>
+                    <th>Date</th>
+                    <th>Type</th>
+                    <th>Status</th>
+                    <th>Notes</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Apr 10, 2026</td>
+                    <td><span class="tag-vl">VL</span></td>
+                    <td><span class="status-badge used">✅ Used</span></td>
+                    <td>—</td>
+                </tr>
+                <tr>
+                    <td>May 13, 2026</td>
+                    <td><span class="tag-vl">VL</span></td>
+                    <td><span class="status-badge used">✅ Used</span></td>
+                    <td>Miggy's graduation</td>
+                </tr>
+                <tr>
+                    <td>Jun 02, 2026</td>
+                    <td><span class="tag-sl">SL</span></td>
+                    <td><span class="status-badge used">✅ Used</span></td>
+                    <td>Upset stomach (Half Day)</td>
+                </tr>
+                <tr>
+                    <td>Jun 24, 2026</td>
+                    <td><span class="tag-vl">VL</span></td>
+                    <td><span class="status-badge used">✅ Used</span></td>
+                    <td>Personal Errand — Half Day</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Team Section -->
+    <div class="section-header">
+        <h2>👥 Team Leave Cards</h2>
+        <span class="badge badge-outline">Balances and logs per AM team member</span>
+    </div>
+
+    <!-- Sally -->
+    <div class="person-card">
+        <div class="person-header">
+            <div class="person-info">
+                <div class="avatar sally">SG</div>
+                <div>
+                    <div class="person-name">Sally Gardose</div>
+                    <div class="person-role">Category Manager · FA, FMCG, LS/GM</div>
+                </div>
+            </div>
+            <div class="days-left-badge">
+                12.5 <span class="lbl">DAYS LEFT</span>
+            </div>
+        </div>
+        <div class="balances">
+            <div class="balance-item">
+                <span class="type">Vacation Leave</span>
+                <span class="count">8.5 <span class="used">/ 10</span></span>
+            </div>
+            <div class="balance-item">
+                <span class="type">Sick Leave</span>
+                <span class="count">3 <span class="used">/ 5</span></span>
+            </div>
+            <div class="balance-item">
+                <span class="type">Birthday Leave</span>
+                <span class="count">1 <span class="used">/ 1</span></span>
+            </div>
+        </div>
+        <h4 style="font-size:14px; font-weight:600; margin-bottom:10px; color:var(--text-muted);">Leave Log</h4>
+        <table class="leave-log">
+            <thead>
+                <tr>
+                    <th>Date</th>
+                    <th>Type</th>
+                    <th>Status</th>
+                    <th>Notes</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Jun 03, 2026</td>
+                    <td><span class="tag-sl">SL</span></td>
+                    <td><span class="status-badge used">✅ Used</span></td>
+                    <td>Stomach ache</td>
+                </tr>
+                <tr>
+                    <td>Jun 11, 2026</td>
+                    <td><span class="tag-vl">VL</span></td>
+                    <td><span class="status-badge used">✅ Used</span></td>
+                    <td>Car emergency — Half Day</td>
+                </tr>
+                <tr>
+                    <td>Jun 19, 2026</td>
+                    <td><span class="tag-sl">SL</span></td>
+                    <td><span class="status-badge used">✅ Used</span></td>
+                    <td>Migraine</td>
+                </tr>
+                <tr>
+                    <td>Jun 24, 2026</td>
+                    <td><span class="tag-vl">VL</span></td>
+                    <td><span class="status-badge used">✅ Used</span></td>
+                    <td>Kids school transpo</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Mergel -->
+    <div class="person-card">
+        <div class="person-header">
+            <div class="person-info">
+                <div class="avatar mergel">MR</div>
+                <div>
+                    <div class="person-name">Mergel Romero</div>
+                    <div class="person-role">Jr. Category Manager · EL & HA</div>
+                </div>
+            </div>
+            <div class="days-left-badge">
+                16 <span class="lbl">DAYS LEFT</span>
+            </div>
+        </div>
+        <div class="balances">
+            <div class="balance-item">
+                <span class="type">Vacation Leave</span>
+                <span class="count">10 <span class="used">/ 10</span></span>
+            </div>
+            <div class="balance-item">
+                <span class="type">Sick Leave</span>
+                <span class="count">5 <span class="used">/ 5</span></span>
+            </div>
+            <div class="balance-item">
+                <span class="type">Birthday Leave</span>
+                <span class="count">1 <span class="used">/ 1</span></span>
+            </div>
+        </div>
+        <div class="no-leaves">No leaves filed yet.</div>
+    </div>
+
+    <!-- Carlo -->
+    <div class="person-card">
+        <div class="person-header">
+            <div class="person-info">
+                <div class="avatar carlo">CM</div>
+                <div>
+                    <div class="person-name">Carlo Meguizo</div>
+                    <div class="person-role">Account Manager · EL & HA</div>
+                </div>
+            </div>
+            <div class="days-left-badge">
+                11 <span class="lbl">DAYS LEFT</span>
+            </div>
+        </div>
+        <div class="balances">
+            <div class="balance-item">
+                <span class="type">Vacation Leave</span>
+                <span class="count">6 <span class="used">/ 10</span></span>
+            </div>
+            <div class="balance-item">
+                <span class="type">Sick Leave</span>
+                <span class="count">5 <span class="used">/ 5</span></span>
+            </div>
+            <div class="balance-item">
+                <span class="type">Birthday Leave</span>
+                <span class="count">0 <span class="used">/ 1</span></span>
+            </div>
+        </div>
+        <h4 style="font-size:14px; font-weight:600; margin-bottom:10px; color:var(--text-muted);">Leave Log</h4>
+        <table class="leave-log">
+            <thead>
+                <tr>
+                    <th>Date</th>
+                    <th>Type</th>
+                    <th>Status</th>
+                    <th>Notes</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Apr 13, 2026</td>
+                    <td><span class="tag-bl">BL</span></td>
+                    <td><span class="status-badge used">✅ Used</span></td>
+                    <td>—</td>
+                </tr>
+                <tr>
+                    <td>Jun 15, 2026</td>
+                    <td><span class="tag-vl">VL</span></td>
+                    <td><span class="status-badge used">✅ Used</span></td>
+                    <td>🏖️ Elyu vacation</td>
+                </tr>
+                <tr>
+                    <td>Aug 19, 2026</td>
+                    <td><span class="tag-vl">VL</span></td>
+                    <td><span class="status-badge planned">🟡 Planned</span></td>
+                    <td>✈️ Out of Country — Sydney, AU</td>
+                </tr>
+                <tr>
+                    <td>Aug 20, 2026</td>
+                    <td><span class="tag-vl">VL</span></td>
+                    <td><span class="status-badge planned">🟡 Planned</span></td>
+                    <td>✈️ Out of Country — Sydney, AU</td>
+                </tr>
+                <tr>
+                    <td>Aug 24, 2026</td>
+                    <td><span class="tag-vl">VL</span></td>
+                    <td><span class="status-badge planned">🟡 Planned</span></td>
+                    <td>✈️ Out of Country — Sydney, AU</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- JD Jacob -->
+    <div class="person-card">
+        <div class="person-header">
+            <div class="person-info">
+                <div class="avatar jd">JJ</div>
+                <div>
+                    <div class="person-name">JD Jacob</div>
+                    <div class="person-role">Account Manager · EL & HA</div>
+                </div>
+            </div>
+            <div class="days-left-badge">
+                16 <span class="lbl">DAYS LEFT</span>
+            </div>
+        </div>
+        <div class="balances">
+            <div class="balance-item">
+                <span class="type">Vacation Leave</span>
+                <span class="count">10 <span class="used">/ 10</span></span>
+            </div>
+            <div class="balance-item">
+                <span class="type">Sick Leave</span>
+                <span class="count">5 <span class="used">/ 5</span></span>
+            </div>
+            <div class="balance-item">
+                <span class="type">Birthday Leave</span>
+                <span class="count">1 <span class="used">/ 1</span></span>
+            </div>
+        </div>
+        <div class="no-leaves">No leaves filed yet.</div>
+    </div>
+
+    <!-- Planning View -->
+    <div class="section-header" style="margin-top:16px;">
+        <h2>📆 Planning View</h2>
+        <span class="badge badge-outline">Useful for coverage planning</span>
+    </div>
+
+    <div class="upcoming-grid">
+        <div class="upcoming-card">
+            <div class="date">Aug 19, 2026</div>
+            <div class="name">Carlo Meguizo</div>
+            <div class="detail">VL · ✈️ Out of Country — Sydney, AU</div>
+        </div>
+        <div class="upcoming-card">
+            <div class="date">Aug 20, 2026</div>
+            <div class="name">Carlo Meguizo</div>
+            <div class="detail">VL · ✈️ Out of Country — Sydney, AU</div>
+        </div>
+        <div class="upcoming-card">
+            <div class="date">Aug 24, 2026</div>
+            <div class="name">Carlo Meguizo</div>
+            <div class="detail">VL · ✈️ Out of Country — Sydney, AU</div>
+        </div>
+    </div>
+
+    <!-- Coverage Notes -->
+    <div class="coverage-box">
+        <h3>📝 Coverage Notes</h3>
+        <p>Add owner/backup coverage here once confirmed. Recommended fields: Person covering, Category/Accounts to cover, Confirmed by.</p>
+        <textarea placeholder="e.g. Mergel covers Carlo's Electronics accounts Aug 19-24. Confirmed by Mhike."></textarea>
+    </div>
+
+    <!-- August 2026 Calendar -->
+    <div class="calendar-section">
+        <div class="calendar-header">
+            <h3>🗓️ August 2026</h3>
+            <span style="font-size:13px; color:var(--text-muted);">Carlo Meguizo leaves highlighted</span>
+        </div>
+        <div class="calendar-grid">
+            <div class="calendar-day-header">Sun</div>
+            <div class="calendar-day-header">Mon</div>
+            <div class="calendar-day-header">Tue</div>
+            <div class="calendar-day-header">Wed</div>
+            <div class="calendar-day-header">Thu</div>
+            <div class="calendar-day-header">Fri</div>
+            <div class="calendar-day-header">Sat</div>
+
+            <div class="calendar-day empty"></div>
+            <div class="calendar-day empty"></div>
+            <div class="calendar-day empty"></div>
+            <div class="calendar-day empty"></div>
+            <div class="calendar-day empty"></div>
+            <div class="calendar-day">1</div>
+            <div class="calendar-day weekend">2</div>
+
+            <div class="calendar-day">3</div>
+            <div class="calendar-day">4</div>
+            <div class="calendar-day">5</div>
+            <div class="calendar-day">6</div>
+            <div class="calendar-day">7</div>
+            <div class="calendar-day">8</div>
+            <div class="calendar-day weekend">9</div>
+
+            <div class="calendar-day">10</div>
+            <div class="calendar-day">11</div>
+            <div class="calendar-day">12</div>
+            <div class="calendar-day">13</div>
+            <div class="calendar-day">14</div>
+            <div class="calendar-day">15</div>
+            <div class="calendar-day weekend">16</div>
+
+            <div class="calendar-day">17</div>
+            <div class="calendar-day">18</div>
+            <div class="calendar-day leave" data-name="Carlo ✈️">19</div>
+            <div class="calendar-day leave" data-name="Carlo ✈️">20</div>
+            <div class="calendar-day">21</div>
+            <div class="calendar-day">22</div>
+            <div class="calendar-day weekend">23</div>
+
+            <div class="calendar-day leave" data-name="Carlo ✈️">24</div>
+            <div class="calendar-day">25</div>
+            <div class="calendar-day">26</div>
+            <div class="calendar-day">27</div>
+            <div class="calendar-day">28</div>
+            <div class="calendar-day">29</div>
+            <div class="calendar-day weekend">30</div>
+
+            <div class="calendar-day">31</div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="footer">
+        Team Leave Tracker · Accounts Management · Mall+<br>
+        Source data mirrored from team tracker dashboard. Built by Mhaik.
+    </div>
+
+</body>
+</html>
