@@ -45,6 +45,10 @@
             margin-bottom: 32px;
             flex-wrap: wrap;
             gap: 16px;
+            background: var(--teal);
+            padding: 20px 28px;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
         }
 
         .header-left {
@@ -56,12 +60,12 @@
         .logo {
             width: 48px;
             height: 48px;
-            background: var(--teal);
+            background: white;
             border-radius: 14px;
             display: flex;
             align-items: center;
             justify-content: center;
-            color: white;
+            color: var(--teal);
             font-weight: 700;
             font-size: 20px;
         }
@@ -69,18 +73,18 @@
         .header h1 {
             font-size: 28px;
             font-weight: 700;
-            color: var(--text);
+            color: white;
         }
 
         .header .subtitle {
             font-size: 14px;
-            color: var(--text-muted);
+            color: rgba(255,255,255,0.85);
             font-weight: 400;
             margin-top: 2px;
         }
 
         .badge {
-            background: var(--teal);
+            background: rgba(255,255,255,0.2);
             color: white;
             padding: 6px 16px;
             border-radius: 20px;
@@ -89,6 +93,7 @@
             display: inline-flex;
             align-items: center;
             gap: 6px;
+            backdrop-filter: blur(4px);
         }
 
         .badge-outline {
@@ -99,7 +104,7 @@
 
         .last-updated {
             font-size: 13px;
-            color: var(--text-muted);
+            color: rgba(255,255,255,0.8);
             display: flex;
             align-items: center;
             gap: 6px;
